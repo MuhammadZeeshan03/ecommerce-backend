@@ -25,5 +25,4 @@ const Product = sequelize.define("product", {
   tags: Sequelize.STRING,
 });
 
-
 module.exports = Product;
