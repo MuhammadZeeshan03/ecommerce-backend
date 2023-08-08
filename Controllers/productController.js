@@ -1,13 +1,14 @@
 const product = require("../models/productModel");
 
 exports.getProducts = (req, res) => {
-  product
-    .findAll()
+  req.user
+    .getProducts() // just because of association we can use getProducts
     .then((products) => {
       res.json(products);
     })
     .catch((err) => console.log(err));
 };
+
 
 exports.postProduct = (req, res) => {
   const name = req.body.name;
@@ -15,9 +16,9 @@ exports.postProduct = (req, res) => {
   const price = req.body.price;
   const category = req.body.category;
   const tags = req.body.tags;
-  console.log(name + description + price + category + tags);
-  product
-    .create({
+  req.user
+    .createProduct({
+      // just because of association we can use createProduct
       name: name,
       description: description,
       price: price,
@@ -35,14 +36,14 @@ exports.postProduct = (req, res) => {
 
 exports.updateProduct = (req, res) => {
   // update product it requires id and all the fields
-  const id = req.params.id;
+  const productId = req.params.id;
   const name = req.body.name;
   const description = req.body.description;
   const price = req.body.price;
   const category = req.body.category;
   const tags = req.body.tags;
   product
-    .findByPk(id)
+    .findByPk(productId)
     .then((product) => {
       product.name = name;
       product.description = description;
