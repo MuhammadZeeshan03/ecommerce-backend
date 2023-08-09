@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const session = require("express-session");
 
 const sequelize = require("./db/database");
 const Product = require("./models/productModel");
@@ -34,6 +35,9 @@ app.use((req, res, next) => {
     });
 });
 
+app.use(
+  session({ secret: "xflow-Research", resave: false, saveUninitialized: false })
+);
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
