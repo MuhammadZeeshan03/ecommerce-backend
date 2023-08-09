@@ -4,7 +4,9 @@ const router = express.Router();
 
 const orderController = require('../Controllers/orderController');
 
-router.post('/addOrder',orderController.addOrder);
+const authenticateToken = require('../middleware/authentication').authenticateToken;
+
+router.post('/addOrder', authenticateToken, orderController.addOrder);
 
 router.get('/getOrders',orderController.getOrders);
 

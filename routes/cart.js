@@ -7,7 +7,7 @@ const authenticateToken = require('../middleware/authentication').authenticateTo
 const cartController = require('../Controllers/cartController');
 
 router.get('/getCart',cartController.getCart);
-router.post('/addProductToCart' ,cartController.addProductToCart);
+router.post('/addProductToCart' , authenticateToken , cartController.addProductToCart);
 router.delete('/deleteProductFromCart/:id',cartController.deleteProductFromCart);
 
 module.exports = router;
