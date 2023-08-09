@@ -1,5 +1,7 @@
 const User = require("../models/userModel");
 
+const bcrypt = require("bcryptjs");
+
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body;
 
@@ -30,4 +32,29 @@ exports.register = async (req, res) => {
         message: "Something went wrong",
       });
     });
+};
+
+exports.login = async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const user = await User.findOne({
+    where: { username: username },
+  });
+  if (!user) {
+    return res.status(400).json({
+      message: "User not found",
+    });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({
+      message: "Incorrect password",
+    });
+  }
+  res.status(200).json({
+    message: "Logged in successfully",
+    user: user,
+  });
 };
