@@ -46,3 +46,20 @@ exports.addProductToCart = async (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.deleteProductFromCart = async (req, res) => {
+  const productId = req.params.id;
+  req.user
+    .getCart()
+    .then((cart) => {
+      return cart.getProducts({ where: { id: productId } });
+    }).then((products)=>{
+      const product = products[0];
+      return product.cartItem.destroy();
+    }).then((result)=>{
+      res.json({message: "Product deleted from cart"});
+    })
+    .catch(
+      (err) => console.log(err)
+    );
+};
