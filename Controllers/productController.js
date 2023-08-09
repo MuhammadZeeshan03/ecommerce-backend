@@ -16,6 +16,7 @@ exports.postProduct = (req, res) => {
   const price = req.body.price;
   const category = req.body.category;
   const tags = req.body.tags;
+  console.log(req.body.user)
   req.user
     .createProduct({
       // just because of association we can use createProduct

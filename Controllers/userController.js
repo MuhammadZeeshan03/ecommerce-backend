@@ -1,6 +1,11 @@
 const User = require("../models/userModel");
 
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
+
+const jwt = require("jsonwebtoken");
+
+const secret = process.env.ACCESS_TOKEN_SECRET;
 
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -33,6 +38,7 @@ exports.register = async (req, res) => {
       });
     });
 };
+
 exports.login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -50,18 +56,14 @@ exports.login = async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (isMatch) {
-    req.session.isLoggedIn = true;
-    req.session.user = user;
+    // create token
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: "1h" });
 
-    await req.session.save((err) => {
-      if (err) {
-        console.log(err);
-      }
-
-      res.status(200).json({
-        message: "Logged in successfully",
-        user: user,
-      });
+    
+    res.status(200).json({
+      message: "Logged in successfully",
+      user: user,
+      token: token,
     });
   } else {
     // password not match
