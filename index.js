@@ -12,6 +12,7 @@ const OrderItem = require("./models/orderItemModel");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/order");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
     });
 });
 
+app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/order", orderRoutes);
@@ -57,23 +59,23 @@ Order.belongsToMany(Product, { through: OrderItem });
 sequelize
   .sync()
   .then((result) => {
-    return User.findOne();
-  })
-  .then((user) => {
-    if (!user) {
-      return User.create({
-        username: "admin",
-        email: "test@gmail.com",
-        password: "123456",
-        role: "admin",
-      });
-    }
-    return user;
-  })
-  .then((user) => {
-    return user.createCart(); // issue is creating cart on each reload
-  })
-  .then((cart) => {
+    //   return User.findOne();
+    // })
+    // .then((user) => {
+    //   if (!user) {
+    //     return User.create({
+    //       username: "admin",
+    //       email: "test@gmail.com",
+    //       password: "123456",
+    //       role: "admin",
+    //     });
+    //   }
+    //   return user;
+    // })
+    // .then((user) => {
+    //   return user.createCart(); // issue is creating cart on each reload
+    // })
+    // .then((cart) => {
     app.listen(3000);
   })
   .catch((err) => {
