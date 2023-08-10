@@ -13,5 +13,9 @@ router.post('/addOrder', authenticateToken, orderController.addOrder);
 // This will return all the orders of the logged in user
 router.get('/getOrders', authenticateToken, orderController.getOrders);
 
+// This will return all the orders
+router.get('/viewAllOrders', orderController.viewAllOrders);
+
+router.get('/getOrder/:id', orderController.getOrderByOrderId);
 
 module.exports = router;

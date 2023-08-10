@@ -9,6 +9,16 @@ exports.getProducts = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+// show all products
+exports.getAllProducts = (req, res) => {
+  product
+    .findAll()
+    .then((products) => {
+      res.json(products);
+    })
+    .catch((err) => console.log(err));
+};
+
 exports.postProduct = (req, res) => {
   const name = req.body.name;
   const description = req.body.description;
