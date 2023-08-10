@@ -9,13 +9,13 @@ exports.getProducts = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-
 exports.postProduct = (req, res) => {
   const name = req.body.name;
   const description = req.body.description;
   const price = req.body.price;
   const category = req.body.category;
   const tags = req.body.tags;
+  console.log(req.body.user)
   req.user
     .createProduct({
       // just because of association we can use createProduct
@@ -34,7 +34,7 @@ exports.postProduct = (req, res) => {
     });
 };
 
-exports.updateProduct = (req, res) => {
+exports.updateProduct = async (req, res) => {
   // update product it requires id and all the fields
   const productId = req.params.id;
   const name = req.body.name;
@@ -42,6 +42,16 @@ exports.updateProduct = (req, res) => {
   const price = req.body.price;
   const category = req.body.category;
   const tags = req.body.tags;
+
+  const productAddedByUser = await req.user.getProducts() // Can only update the products that are added by the user
+  const userProduct = productAddedByUser.find((product) => product.id == productId)
+
+  if (!userProduct) {
+    return res.status(400).json({
+      message: "You can only update the product that you have added",
+    });
+  }
+  
   product
     .findByPk(productId)
     .then((product) => {
@@ -58,8 +68,18 @@ exports.updateProduct = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct =async (req, res) => {
   const id = req.params.id;
+
+  const productAddedByUser = await req.user.getProducts() // Can only update the products that are added by the user
+  const userProduct = productAddedByUser.find((product) => product.id == id)
+
+  if (!userProduct) {
+    return res.status(400).json({
+      message: "You can only delete the product that you have added",
+    });
+  }
+
   product
     .findByPk(id)
     .then((product) => {

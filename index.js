@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const session = require("express-session");
 
 const sequelize = require("./db/database");
 const Product = require("./models/productModel");
@@ -24,20 +23,6 @@ app.get("/", (req, res) => {
   res.send("Hi, this is the root route");
 });
 
-app.use((req, res, next) => {
-  User.findByPk(1)
-    .then((user) => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.use(
-  session({ secret: "xflow-Research", resave: false, saveUninitialized: false })
-);
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
@@ -63,23 +48,6 @@ Order.belongsToMany(Product, { through: OrderItem });
 sequelize
   .sync()
   .then((result) => {
-    //   return User.findOne();
-    // })
-    // .then((user) => {
-    //   if (!user) {
-    //     return User.create({
-    //       username: "admin",
-    //       email: "test@gmail.com",
-    //       password: "123456",
-    //       role: "admin",
-    //     });
-    //   }
-    //   return user;
-    // })
-    // .then((user) => {
-    //   return user.createCart(); // issue is creating cart on each reload
-    // })
-    // .then((cart) => {
     app.listen(3000);
   })
   .catch((err) => {
