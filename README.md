@@ -2,7 +2,7 @@
 
 Clone the project and run
 
-npm install.
+``` npm install```
 
 This will install all the required dependencies.
 
