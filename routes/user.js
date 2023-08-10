@@ -7,7 +7,9 @@ const validate = require("../middleware/validation");
 
 const {registerValidation, loginValidation } = require("../middleware/validationSchema");
 
-router.post("/register", validate(registerValidation), hashPassword, userController.register);
+
+// Register and Login routes
+router.post("/register", validate(registerValidation), hashPassword, userController.register); 
 router.post("/login", validate(loginValidation), userController.login);
 
 

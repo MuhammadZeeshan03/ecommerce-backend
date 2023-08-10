@@ -19,17 +19,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hi, this is the root route");
-});
-
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/order", orderRoutes);
 
 // One to One and one to Many relations
-
 Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" }); // Products belongs to a User
 User.hasMany(Product); // A User has many Products
 

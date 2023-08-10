@@ -1,6 +1,7 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 
+// This will return all the products in the cart of the logged in user
 exports.getCart = async (req, res) => {
   req.user
     .getCart()
@@ -12,7 +13,8 @@ exports.getCart = async (req, res) => {
     })
     .catch((err) => console.log(err));
 };
-
+// This will add a product to the cart of the logged in user
+// and also check that if the product is already in the cart then it will increase the quantity of the product
 exports.addProductToCart = async (req, res) => {
   const productId = req.body.productId;
   let fetchedCart;
@@ -53,6 +55,7 @@ exports.addProductToCart = async (req, res) => {
     .catch((err) => console.log(err));
 };
 
+// This will delete a product from the cart of the logged in user
 exports.deleteProductFromCart = async (req, res) => {
   const productId = req.params.id;
   req.user
