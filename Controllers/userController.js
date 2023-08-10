@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({
-        message: "Something went wrong",
+        message: "Something went wrong Like role is not correct",
       });
     });
 };
@@ -59,7 +59,6 @@ exports.login = async (req, res) => {
     // create token
     const token = jwt.sign({ id: user.id }, secret, { expiresIn: "1h" });
 
-    
     res.status(200).json({
       message: "Logged in successfully",
       user: user,
